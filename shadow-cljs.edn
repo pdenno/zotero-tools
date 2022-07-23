@@ -1,0 +1,5 @@
+{:deps true
+ :builds {:script
+          {:target :node-script
+           :main zotero-tools.script/main
+           :output-to "target/script.js"}}}
