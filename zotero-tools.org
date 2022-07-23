@@ -10,7 +10,7 @@
     - "shadow-cljs": "^2.19.6",  
   * installed shadow-cljs globally ~npm install -g shadow-cljs~ so that I can run it easily from the command line.
 ** Build
-    ~shadow-cljs compile-script~
+    ~shadow-cljs compile script~
 ** Run
     ~node target/script.js~
     It should return something like:
