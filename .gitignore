@@ -17,3 +17,6 @@ out
 target
 .cpcache
 .clj-kondo/.cache
+.shadow-cljs
+node_modules
+
