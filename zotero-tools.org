@@ -2,7 +2,7 @@
 * Links
     * [[https://shadow-cljs.github.io/docs/UsersGuide.html][shadow-cljs user's guide]]
 * About shadow-cljs
-    * 
+    * You can either ~compile~ or ~watch~.
 * Building and running it
 ** Preliminary
   * ~npm init~ in the project directory. _I think_ you'll need to add
