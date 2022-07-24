@@ -1,8 +1,16 @@
 (ns zotero-tools.script
   (:require
    [taoensso.timbre :as log]
-   ["zotero-api-client"]))
+   ["ansiparse" :as ap ]
+   ["zotero-api-client" :as zapi]))
+
+(def data {:key :value})
+
+(add-tap #(println %))
+
+(defn parse-ansi-string [s]
+  (js/ansiparse s))
 
 (defn main [& _cli-args]
-  (prn "Hello world, again!")
+  (println (str "ANSIparse of 'foo' = " (ap/ansiparse.)))
   (log/info "Starting Client"))

@@ -1,24 +1,91 @@
 * Purpose: explore clojurescript and zotero-api-client simultaneously.
 * Links
     * [[https://shadow-cljs.github.io/docs/UsersGuide.html][shadow-cljs user's guide]]
+    * [[https://github.com/tnajdek/zotero-api-client][Zotero API client on github]] 
+    * [[https://www.npmjs.com/package/zotero-api-client][Zotero-api-client NPM documentation]]
 * ToDo
 ** TODO make the build aliases :run-tests :cider :dev useful or remove.
 * About shadow-cljs
     * You can either ~compile~ or ~watch~.
     * I'm using ~:deps true~ in shadow-cljs.edn so deps.edn should have ~:paths   ["src"]~.
+    * Clean compilation no longer report to the REPL buffer, it seems.
+    * Don't use cljsjs.  
 * Building and running it
 ** Preliminary
-  * ~npm init~ in the project directory. _I think_ you'll need to add
+  * ~npm init~ in the project directory. _I think_ you'll need to also npm install:
     - "zotero-api-client": "^0.40.0",
     - "shadow-cljs": "^2.19.6",
   * installed shadow-cljs globally ~sudo npm install -g shadow-cljs~ so that I can run it easily from the command line.
 ** Build
-    ~shadow-cljs compile script~
+    ~shadow-cljs compile script~ OR
+    ~shadow-cljs -d nrepl/nrepl:0.9.0 -d cider/piggieback:0.5.3 -d cider/cider-nrepl:0.28.5 watch script~ OR
+    cider: C-c M-j  (choose shadow-cljs REPL) *This doesn't seem to be working. (Try saving bad code; no warning; mode shows as clj.)*
 ** Run
     ~node target/script.js~
     It should return something like:
 
     "Hello world, again!"
      2022-07-23T20:24:03.185Z INFO [zotero-tools.script:8] - Starting Client
+* cljsjs and shadow-cljs
+** The answer https://shadow-cljs.github.io/docs/UsersGuide.html#cljsjs
+***  The answer is don't use cljsjs!
+Since shadow-cljs can access npm packages directly we do not need to rely on re-packaged CLJSJS packages.
+
+However many CLJS libraries are still using CLJSJS packages and they would break with shadow-cljs since it doesn’t support those anymore.
+It is however very easy to mimick those cljsjs namespaces since they are mostly build from npm packages anyways.
+It just requires one shim file that maps the cljsjs.thing back to its original npm package and exposes the expected global variable.
+*** Still don't have it (I don't know how to call ansiparse.)
+  https://www.demo2s.com/node.js/node-js-ansiparse-ansiparse-value.html
+(println (str "ANSIparse of 'foo' = " (ap/ansiparse.)))
+                                        ^
+TypeError: shadow.js.shim.module$ansiparse.ansiparse is not a constructor
+
+
+** everything else I tried
+*** Example: ansiparse, https://github.com/cljsjs/packages/tree/master/ansiparse
+**** Its README
+[cljsjs/ansiparse "0.0.5-1-0"] ;; latest release
+
+This jar comes with deps.cljs as used by the Foreign Libs feature of the ClojureScript compiler.
+After adding the above dependency to your project you can require the packaged library like so:
+
+(ns your-ns
+  (:require [cljsjs.ansiparse]))
+
+(defn parse-ansi-string [s]
+  (js/ansiparse s))
+**** I did that; it's not found.
+***** These look okay
+{:foreign-libs
+ [{:file "cljsjs/development/ansiparse.inc.js",
+   :provides ["cljsjs.ansiparse"],
+   :file-min "cljsjs/production/ansiparse.min.inc.js"}],
+ :externs ["cljsjs/ansiparse/common/ansiparse.ext.js"]} *use of anisparse/common here* /No big deal; others are like this./
+
+
+ {:foreign-libs
+ [{:file "cljsjs/development/jquery.inc.js",
+   :provides ["cljsjs.jquery"],
+   :file-min "cljsjs/production/jquery.min.inc.js"}],
+ :externs ["cljsjs/common/jquery.ext.js"]}   *Use of common here*
+
+***** Interesting that it has no problem finding taoensso/timbre
+*** https://clojurescript.org/reference/packaging-foreign-deps
+   It is about packaging non-Closure compatible JavaScript libraries, and recommends using cljsjs.
+
+
 * Log
 ** [2022-07-23 Sat] Started investigation
+   * I was running ~shadow-cljs compile script~; Now I'm trying ~shadow-cljs -d nrepl/nrepl:0.9.0 -d cider/piggieback:0.5.3 -d cider/cider-nrepl:0.28.5 watch script~
+   * From this I get a *No available JS runtime.*
+     - REPL buffer doesn't show anything when you save a file that compiles clean.
+     - If it doesn't compile clean it does indeed show up in the REPL buffer.
+     - Makes me think most everything except JS runtime is running fine.
+       There are several to choose from. See [[https://shadow-cljs.github.io/docs/UsersGuide.html#repl-troubleshooting][the diagram]].
+       /The compiled JS code however must also be loaded by a JS runtime (eg. Browser or node process) and/
+       /that JS runtime must connect back to the running shadow-cljs process./
+       /Most :target configurations will have the necessary code added by default and should just connect automatically./
+       *Probably not :node-script!*
+       See 9.1.2 /You will often write scripts that run as servers or some other long-running process./
+       That's the thing to do. (Sounds better than :node-module; and as it says "simple to set up.") =DO THIS.=
+       See https://shadow-cljs.github.io/docs/UsersGuide.html#NodeHotCodeReload. 

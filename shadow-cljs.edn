@@ -1,4 +1,9 @@
-{:deps true
+{#_#_:source-paths ["src"]
+ #_#_:dependencies [[shadow-cljs      "2.19.6"]
+                    [clojurescript "1.11.60"]
+                    [timbre       "5.2.1"]
+                    [ansiparse          "0.0.5-1-0"]]
+ :deps true
  :builds {:script
           {:target :node-script
            :main zotero-tools.script/main
