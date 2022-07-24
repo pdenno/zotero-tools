@@ -1,14 +1,15 @@
-{:paths   ["src"]
+{:paths   ["src/server" "src/script"]
 
  :deps    {thheller/shadow-cljs        {:mvn/version "2.19.6"}
            org.clojure/clojurescript   {:mvn/version "1.11.60"}
            com.taoensso/timbre         {:mvn/version "5.2.1"}}
 
- :aliases {:run-tests  {:main-opts  ["-m" "kaocha.runner"]
+#_#_ :aliases {:run-tests  {:main-opts  ["-m" "kaocha.runner"]
                         :extra-deps {lambdaisland/kaocha {:mvn/version "1.68.1059"}}}
 
            ;; Methods: (1) and (3) start in a shell; (1) looks promising.
-           ;; (1) shadow-cljs -d nrepl/nrepl:0.9.0 -d cider/piggieback:0.5.3 -d cider/cider-nrepl:0.28.5 watch script
+           ;; (0) shadow-cljs compile script ; node target/script.js
+           ;; (1) shadow-cljs -d nrepl/nrepl:0.9.0 -d cider/piggieback:0.5.3 -d cider/cider-nrepl:0.28.5 watch server
            ;;     - or node_modules/shadow-cljs/cli/runner.js....
            ;;     - With this one you, M-x cider-connect-cljs and choose :main, :browser ???g
            ;; (2) C-c M-j

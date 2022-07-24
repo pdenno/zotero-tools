@@ -4,7 +4,6 @@
   "description": "node.js script to explore zotero API",
   "main": "index.js",
   "dependencies": {
-    "ansiparse": "^0.1.0",
     "asn1.js": "^5.4.1",
     "assert": "^1.5.0",
     "base64-js": "^1.5.1",
