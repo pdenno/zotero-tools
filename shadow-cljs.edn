@@ -4,6 +4,7 @@
                    :output-to "target/script.js"}
           :server {:target :node-script
                    :main zotero-tools.server/main
+                   :compiler-options {:externs ["datascript/externs.js"]}
                    :output-to "target/server.js"
                    :devtools {:before-load-async zotero-tools.server/stop ; Needed for reload to work.
                               :after-load zotero-tools.server/start}}}} ; Used for hot-code reload too.
