@@ -17,14 +17,14 @@ An example to explore [Clojurescript](https://clojurescript.org/),
 
 # Building/running
 
-[comment]: # ## The script
-[comment]: #   The current script does nothing much, but the plan is to generate EDN or JSON corresponding to a Zotero Library.
-[comment]: # 
-[comment]: # At a shell prompt:
-[comment]: # ```bash
-[comment]: #  shadow-cljs compile script                # This creates target/script.js (see ./shadow-cljs.edn, :target :script)
-[comment]: #  node --trace-warnings target/script.js    # Run the script. (--tracew-warnings is optional.)
-[comment]: # ```
+[//]: # ## The script
+[//]: #   The current script does nothing much, but the plan is to generate EDN or JSON corresponding to a Zotero Library.
+[//]: #
+[//]: # At a shell prompt:
+[//]: # ```bash
+[//]: #  shadow-cljs compile script                # This creates target/script.js (see ./shadow-cljs.edn, :target :script)
+[//]: #  node --trace-warnings target/script.js    # Run the script. (--tracew-warnings is optional.)
+[//]: # ```
 
 ## The server (in emacs, for development)
 
